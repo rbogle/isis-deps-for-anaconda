@@ -1,0 +1,36 @@
+# This file created by conda-build 1.21.14+0.g4dfebe9.dirty
+# meta.yaml template originally from:
+# /Users/travis/build/conda-forge/lapack-feedstock/recipe, last modified Thu Nov  3 09:32:09 2016
+# ------------------------------------------------
+
+package:
+    name: lapack
+    version: 3.6.1
+source:
+    fn: lapack-3.6.1.tgz
+    patches:
+        - python-test.patch
+    sha1: 7220a9bc9c766cb513007f313b804d88f110c228
+    url: http://www.netlib.org/lapack/lapack-3.6.1.tgz
+build:
+    number: '1'
+requirements:
+    build:
+        - toolchain
+        - cmake
+        - gcc
+        - cloog 0.18.0 10
+    run:
+        - libgfortran
+test:
+    commands:
+        - test -f ${PREFIX}/lib/liblapack.dylib
+about:
+    home: http://www.netlib.org/lapack
+    license: BSD 3-Clause
+    summary: Linear Algebra PACKage
+extra:
+    recipe-maintainers:
+        - jakirkham
+        - jschueller
+        - hadim

@@ -1,0 +1,41 @@
+# This file created by conda-build 1.21.14+0.g4dfebe9.dirty
+# meta.yaml template originally from:
+# /Users/travis/build/conda-forge/libtiff-feedstock/recipe, last modified Wed Nov  2 09:33:13 2016
+# ------------------------------------------------
+
+package:
+    name: libtiff
+    version: 4.0.6
+source:
+    fn: tiff-4.0.6.tar.gz
+    patches: ''
+    sha256: 4d57a50907b510e3049a4bba0d7888930fdfc16ce49f1bf693e5b6247370d68c
+    url: http://download.osgeo.org/libtiff/tiff-4.0.6.tar.gz
+build:
+    features: ''
+    number: '7'
+requirements:
+    build:
+        - toolchain
+        - zlib 1.2.*
+        - jpeg 9*
+        - xz 5.2.*
+    run:
+        - zlib 1.2.*
+        - jpeg 9*
+        - xz 5.2.*
+test:
+    commands:
+        - test -f ${PREFIX}/lib/libtiff.a
+        - test -f ${PREFIX}/lib/libtiffxx.a
+        - test -f ${PREFIX}/lib/libtiff.dylib
+        - test -f ${PREFIX}/lib/libtiffxx.dylib
+about:
+    home: http://www.remotesensing.org/libtiff/
+    license: HPND
+    summary: Support for the Tag Image File Format (TIFF).
+extra:
+    recipe-maintainers:
+        - jakirkham
+        - ocefpaf
+        - stuarteberg

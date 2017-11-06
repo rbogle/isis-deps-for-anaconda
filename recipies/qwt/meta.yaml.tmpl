@@ -1,0 +1,55 @@
+
+package:
+  name: qwt
+  version: {{ package_versions.qwt }}
+
+source:
+  fn: qwt-{{ package_versions.qwt }}.tar.bz2
+  url: https://sourceforge.net/projects/qwt/files/qwt/{{ package_versions.qwt }}/qwt-{{ package_versions.qwt }}.tar.bz2
+
+  patches:
+    # Can't seem to avoid /usr/local/ install without patch
+    - qwtconfig.pri.patch
+    # build in release mode
+    - windows.patch
+
+build:
+  features:
+    - vc9  # [win and py27]
+    - vc14  # [win and py>=35]
+  skip: true  # [win and py36]
+
+requirements:
+  build:
+    - qt {{ run_dependencies.qt }}
+    - toolchain  # [unix]
+    - python  # [win]
+    - vc 9  # [win and py27]
+    - vc 14  # [win and py>=35]
+  run:
+    - qt {{ run_dependencies.qt }}
+    - vc 9  # [win and py27]
+    - vc 14  # [win and py>=35]
+
+test:
+  requires:
+    - python {{'{{'}} os.environ.get('PY_VER', '') + '*' {{'}}'}}  # [win]
+  commands:
+    - test -f ${PREFIX}/lib/libqwt.so  # [linux]
+    - test -f ${PREFIX}/lib/libqwt.dylib  # [osx]
+    - if not exist %PREFIX%\\Library\\include\\qwt.h exit 1  # [win]
+    - if not exist %PREFIX%\\Library\\bin\\qwt.dll exit 1  # [win]
+    - if not exist %PREFIX%\\Library\\lib\\qwt.lib exit 1  # [win]
+
+about:
+  home: http://qwt.sourceforge.net/
+  license: Qwt, Version 1.0
+  license_file: COPYING
+  summary: Qt widgets for technical applications.
+  doc_url: http://qwt.sourceforge.net/
+  dev_url: https://sourceforge.net/projects/qwt/
+
+extra:
+  recipe-maintainers:
+    - ceholden
+    - jschueller

@@ -1,0 +1,36 @@
+boost-cpp 1.59 libraries
+bullet 2.86 libraries
+cmake 3.9.1 binary
+doxygen 1.8.13 binary
+ds9 7.3.2 binary
+eigen 3.3.3 library
+embree 2.16.0 library
+flann 1.8.4 library
+geos 3.5.1 library
+geotiff 1.4.0 library
+gmm 5.0 library
+gsl 2.1 library
+hdf5 1.8.15 (patch 1) library
+IdlDlm ??
+jama 125 (obtainable from existing OSX/linux system)
+kakadu 7.9.1 library
+lapack 3.5.0 library
+naif N0066 library
+nanoflann 1.1.7 library
+ninja 1.7.2 binary
+nn 1.85.1 library
+opencv 3.1.0 library
+patchelf 0.8 library
+pcl 1.8.0 library
+protobuf 2.6.1
+qhull 7.2.0 library
+qt 5.7.1 library
+qwt 6.1.2 library
+suitesparse 4.4.5 library
+superlu 4.3 library
+tbb 4.4 library
+libtiff 4.0.5 library
+tnt 1.2.6 library
+vtk 7.1.1
+xalan-c 1.11 library binary
+xerces-c 3.1.2 library

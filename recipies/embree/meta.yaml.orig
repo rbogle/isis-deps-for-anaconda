@@ -1,0 +1,34 @@
+# This file created by conda-build 2.1.6
+# meta.yaml template originally from:
+# /Users/travis/build/conda-forge/embree-feedstock/recipe, last modified Thu Mar 16 08:20:53 2017
+# ------------------------------------------------
+
+package:
+    name: embree
+    version: 2.14.0
+source:
+    fn: embree-2.14.0.tar.gz
+    sha256: f6113506bab9430f98773b0ab7776efe387f4d40c8785d8f8c427a91c36f4cfe
+    url: https://github.com/embree/embree/releases/download/v2.14.0/embree-2.14.0.x86_64.macosx.tar.gz
+build:
+    detect_binary_files_with_prefix: 'true'
+    noarch: ''
+    noarch_python: false
+    number: '0'
+    string: '0'
+requirements:
+    build: []
+    run: []
+test:
+    commands:
+        - test -f "${PREFIX}/lib/libembree.dylib"
+about:
+    home: https://embree.github.io/
+    license: Apache 2.0
+    license_file: doc/LICENSE.txt
+    summary: High Performance Ray Tracing Kernels
+extra:
+    final: true
+    recipe-maintainers:
+        - scopatz
+        - Xarthisius

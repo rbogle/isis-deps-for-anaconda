@@ -1,0 +1,36 @@
+
+package:
+  name: embree
+  version: {{ package_versions.embree }}
+
+source:
+  fn: embree-{{ package_versions.embree }}.tar.gz  # [unix]
+  url: https://github.com/embree/embree/releases/download/v{{ package_versions.embree }}/embree-{{ package_versions.embree }}.x86_64.linux.tar.gz  # [linux]
+  url: https://github.com/embree/embree/releases/download/v{{ package_versions.embree }}/embree-{{ package_versions.embree }}.x86_64.macosx.tar.gz  # [osx]
+  fn: embree-{{ package_versions.embree }}.zip  # [win]
+  url: https://github.com/embree/embree/releases/download/v{{ package_versions.embree }}/embree-{{ package_versions.embree }}.x64.windows.zip  # [win]
+
+
+build:
+  number: 0
+  detect_binary_files_with_prefix: true
+
+requirements:
+ build:
+  - python  # [win]
+
+test:
+  commands:
+    - test -f "${PREFIX}/lib/libembree.so"  # [linux]
+    - test -f "${PREFIX}/lib/libembree.dylib"  # [osx]
+
+about:
+  home: https://embree.github.io/
+  license: Apache 2.0
+  license_file: doc/LICENSE.txt
+  summary: High Performance Ray Tracing Kernels
+
+extra:
+  recipe-maintainers:
+    - scopatz
+    - Xarthisius

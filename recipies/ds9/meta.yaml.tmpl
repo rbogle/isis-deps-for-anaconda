@@ -1,0 +1,29 @@
+package:
+  name: ds9
+  version: {{ package_versions.ds9 }}
+
+source:
+  fn: ds9.{{ package_versions.ds9  }}.tar.gz  # [unix]
+  url: https://ds9.si.edu/archive/source/ds9.{{ package_versions.ds9 }}.tar.gz
+
+build:
+  detect_binary_files_with_prefix: true
+
+requirements:
+ build:
+
+
+test:
+  commands:
+
+    #- test -f "${PREFIX}/lib/libembree.dylib"  # [osx]
+
+about:
+  home: https://ds9.si.edu
+  license: Apache 2.0
+  license_file: doc/LICENSE.txt
+  summary: High Performance Ray Tracing Kernels
+
+extra:
+  recipe-maintainers:
+    - rbogle
