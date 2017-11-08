@@ -1,0 +1,26 @@
+
+package:
+  name: bullet
+  version: {{ package_versions.bullet }}
+
+source:
+  fn: {{ package_versions.bullet }}.tar.gz
+  url: https://github.com/bulletphysics/bullet3/archive/{{ package_versions.bullet }}.tar.gz
+
+build:
+  detect_binary_files_with_prefix: true
+
+requirements:
+ build:
+  - cmake {{ run_dependencies.cmake }}
+
+about:
+  home:  http://bulletphysics.org
+  license: zlib
+  license_file: LICENSE.txt
+  summary: Bullet Physics SDK: real-time collision detection \
+   and multi-physics simulation for VR, games, visual effects, robotics, machine learning etc.
+
+extra:
+  recipe-maintainers:
+    - rbogle

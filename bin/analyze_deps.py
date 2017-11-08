@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+# This script parses all the build and run requirements for all the recipies
+# and outputs as json encapsulated report of the dependencies between packages.
+# We used this to create the ./meta/conda_build_config.yaml file 
+
 import yaml
 import os
 import os.path

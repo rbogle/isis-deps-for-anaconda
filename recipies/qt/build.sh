@@ -7,7 +7,7 @@ chmod +x configure
 if [ $(uname) == Linux ]; then
 
     # Download QtWebkit
-    curl "http://linorg.usp.br/Qt/community_releases/5.6/${PKG_VERSION}/qtwebkit-opensource-src-${PKG_VERSION}.tar.xz" > qtwebkit.tar.xz
+    curl "http://linorg.usp.br/Qt/community_releases/5.7/${PKG_VERSION}/qtwebkit-opensource-src-${PKG_VERSION}.tar.xz" > qtwebkit.tar.xz
     unxz qtwebkit.tar.xz
     tar xf qtwebkit.tar
     mv qtwebkit-opensource-src* qtwebkit
@@ -157,7 +157,7 @@ then
     # We built Qt itself with SDK 10.9, but we shouldn't
     # force users to also build their Qt apps with SDK 10.9
     # https://bugreports.qt.io/browse/QTBUG-41238
-    sed -i '' s/macosx10\../macosx/g ${PREFIX}/mkspecs/qdevice.pri
+    sed -i '' s/macosx10\.[[:digit:]]*/macosx/g ${PREFIX}/mkspecs/qdevice.pri
 
     POST_LINK=$BIN/.qt-post-link.sh
     PRE_UNLINK=$BIN/.qt-pre-unlink.sh

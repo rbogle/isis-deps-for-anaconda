@@ -34,7 +34,8 @@ def build_pkg(recipe_path, outputdir, config):
     build_config={
         'output_folder': outputdir,
         'python': config.get('python', '2.7'),
-        'numpy': config.get('numpy', '1.11')
+        'numpy': config.get('numpy', '1.11'),
+        'channel': config.get('channel')
     }
     try:
         conda.build(recipe_path, **build_config)
@@ -45,9 +46,10 @@ def build_pkg(recipe_path, outputdir, config):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--config", help="path to the config file", default=argparse.SUPPRESS)
+    parser.add_argument("-f", "--config", help="path to the config file", default=argparse.SUPPRESS)
     parser.add_argument("-r", "--recipies", help="path where recipes live",default=argparse.SUPPRESS)
     parser.add_argument("-d", "--dest", help="destination path for the build", default=argparse.SUPPRESS)
+    parser.add_argument("-c", "--channel", nargs='*', help="additional channels to use in build", default=argparse.SUPPRESS)
     parser.add_argument("-n", "--nometa", help="do not generate new meta.yaml from template", action="store_true")
     parser.add_argument("-b", "--nobuild", help="do not build the packages", action="store_true")
     parser.add_argument("-y", "--noprompt", help="do not prompt for input on each package", action="store_true")
@@ -58,6 +60,7 @@ if __name__ == '__main__':
     config_file = args.get('config', '%s/meta/conda_build_config.yaml' %base_path)
     recipies_path = args.get('recipies', '%s/recipies' %base_path)
     dest_path = args.get('dest', '%s/build' %base_path)
+    channel=args.get('channel', list())
     no_meta = args.get('nometa')
     no_prompt = args.get('noprompt')
     no_build = args.get('nobuild')
@@ -69,6 +72,7 @@ if __name__ == '__main__':
     print "Operating on packages: {}".format(' '.join(packages))
 
     config = load_config(config_file)
+    config['channel'] = channel
 
     for package in packages:
 

@@ -3,6 +3,7 @@ numpy: '1.11'
 package_versions:
   embree: 2.16.0
   boostcpp: "1.65.1"
+  bullet: "2.86.1"
   cmake: "3.9.1"
   doxygen: "1.8.13"
   ds9: "7.5"

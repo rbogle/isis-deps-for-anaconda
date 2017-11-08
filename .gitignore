@@ -1,0 +1,10 @@
+.DS_Store
+._*
+Thumbs.db
+.Trashes
+.Spotlight*
+meta.yaml.template
+meta.yaml
+build/
+pkgs/
+*.pyc
