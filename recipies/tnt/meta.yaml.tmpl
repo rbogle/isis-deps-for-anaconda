@@ -1,0 +1,19 @@
+
+package:
+  name: tnt
+  version: {{ package_versions.tnt }}
+
+source:
+  fn: tnt_{{ package_versions.bullet }}.zip
+  url: http://math.nist.gov/tnt/tnt_{{ package_versions.tnt }}.zip
+
+
+about:
+  home:  http://math.nist.gov/tnt/
+  license: public domain
+  summary: collection of interfaces and reference implementations \
+   of numerical objects useful for scientific computing in C++.
+
+extra:
+  recipe-maintainers:
+    - rbogle

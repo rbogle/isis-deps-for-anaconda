@@ -1,0 +1,18 @@
+
+package:
+  name: gmm
+  version: {{ package_versions.gmm }}
+
+source:
+  fn: gmm-{{ package_versions.gmm }}.tar.gz
+  url: http://download-mirror.savannah.gnu.org/releases/getfem/stable/gmm-{{ package_versions.gmm }}.tar.gz
+
+
+about:
+  home:http://getfem.org/
+  license: GPL v3.1
+  summary: part of getfem++, includes a generic matrix template library inspired by MTL and ITL.
+
+extra:
+  recipe-maintainers:
+    - rbogle

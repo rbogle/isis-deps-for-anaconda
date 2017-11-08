@@ -1,0 +1,19 @@
+
+package:
+  name: jama
+  version: {{ package_versions.jama }}
+
+source:
+  fn: jama{{ package_versions.jama }}.zip
+  url: http://math.nist.gov/tnt/jama{{ package_versions.jama }}.zip
+
+
+about:
+  home: http://math.nist.gov/tnt/
+  license: public domain
+  summary: The Template Numerical Toolkit (TNT) is a collection of \
+   interfaces and reference implementations of numerical objects useful for scientific computing in C++
+
+extra:
+  recipe-maintainers:
+    - rbogle
