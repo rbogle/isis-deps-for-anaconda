@@ -32,7 +32,7 @@ if [ `uname` == Darwin ]; then
     CC=cc
     CXX=c++
     PY_LIB="libpython${PY_VER}.dylib"
-    MACOSX_DEPLOYMENT_TARGET=10.11
+    MACOSX_DEPLOYMENT_TARGET=10.9
 
     cmake .. \
         -DCMAKE_C_COMPILER=$CC \

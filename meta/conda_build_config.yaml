@@ -17,6 +17,7 @@ package_versions:
   hdf5: "1.8.18"
   jama: "125"
   lapack: "3.6.1"
+  naif: "n0066"
   nanoflann: "1.2.2"
   ninja: "1.7.2"
   nn: "1.86.0"

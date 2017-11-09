@@ -1,0 +1,33 @@
+package:
+  name: pcl
+  version: {{ package_versions.pcl }}
+
+source:
+  fn:  pcl-{{ package_versions.pcl }}.tar.gz
+  url: https://github.com/PointCloudLibrary/pcl/archive/pcl-{{ package_versions.pcl }}.tar.gz
+  patches:
+    - supervoxel.patch      [win]
+    - gp3_surface.patch     [win]
+    - mls_smoothing.patch   [win]
+
+
+requirements:
+  build:
+    - boost {{ run_dependencies.boost }}
+    - cmake
+    - eigen
+    - flann
+    - libpng                [unix]
+    - zlib                  [unix]
+    - pkg-config            [unix]
+
+  run:
+    - boost {{ run_dependencies.boost }}
+    - eigen
+    - flann
+    - libpng                [unix]
+    - zlib                  [unix]
+
+about:
+  home: http://pointclouds.org/
+  license: BSD

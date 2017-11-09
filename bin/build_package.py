@@ -35,8 +35,13 @@ def build_pkg(recipe_path, outputdir, config):
         'output_folder': outputdir,
         'python': config.get('python', '2.7'),
         'numpy': config.get('numpy', '1.11'),
-        'channel': config.get('channel')
+        'channel': config.get('channel'),
+
     }
+    # if noupload is true turn off default is to upload
+    if not config['noupload']:
+        build_config['user']= config.get('user')
+
     try:
         conda.build(recipe_path, **build_config)
     except Exception as e :
@@ -53,6 +58,8 @@ if __name__ == '__main__':
     parser.add_argument("-n", "--nometa", help="do not generate new meta.yaml from template", action="store_true")
     parser.add_argument("-b", "--nobuild", help="do not build the packages", action="store_true")
     parser.add_argument("-y", "--noprompt", help="do not prompt for input on each package", action="store_true")
+    parser.add_argument("-l", "--noupload", help="upload files after build", action="store_true")
+    parser.add_argument("-u", "--user", help="user to upload to in anaconda cloud", default=argparse.SUPPRESS)
     parser.add_argument("packages", nargs='*', help="which package(s) to process, specifying 'all' will process all found")
     args = vars(parser.parse_args())
 
@@ -73,6 +80,8 @@ if __name__ == '__main__':
 
     config = load_config(config_file)
     config['channel'] = channel
+    config['user'] = args.get('user', 'usgs-astrogeology')
+    config['noupload'] = args.get('noupload')
 
     for package in packages:
 

@@ -1,0 +1,20 @@
+
+package:
+    name: flann
+    version: {{ package_versions.flann }}
+source:
+    fn: flann-{{ package_versions.flann }}-src.zip
+    url: http://people.cs.ubc.ca/~mariusm/uploads/FLANN/flann-{{ package_versions.flann }}-src.zip
+
+
+requirements:
+    build:
+        - hdf5
+
+about:
+    home: http://assimp.sourceforge.net/
+    license: BSD
+
+extra:
+  recipe-maintainers:
+    - rbogle

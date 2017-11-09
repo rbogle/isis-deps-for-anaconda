@@ -1,0 +1,39 @@
+
+package:
+    name: qhull
+    version: {{ package_versions.qhull }}
+
+source:
+    git_url: https://github.com/bergtholdt/qhull.git
+    git_rev: master
+
+
+requirements:
+    build:
+        - gcc     # [unix]
+        - cmake
+    run:
+        - libgcc  # [unix]
+
+test:
+    commands:
+        # Verify libraries.
+        - test -f "$PREFIX/bin/qconvex"                       # [unix]
+        - test -f "$PREFIX/bin/qdelaunay"                     # [unix]
+        - test -f "$PREFIX/bin/qhalf"                         # [unix]
+        - test -f "$PREFIX/bin/qhull"                         # [unix]
+        - test -f "$PREFIX/bin/qvoronoi"                      # [unix]
+        - test -f "$PREFIX/bin/rbox"                          # [unix]
+        - test -f "$PREFIX/lib/libqhullcpp.a"                    # [unix]
+        - test -f "$PREFIX/lib/libqhullstatic.a"                 # [unix]
+        - test -f "$PREFIX/lib/libqhullstatic_r.a"               # [unix]         
+
+about:
+    home: http://www.qhull.org/
+    license: BSD like
+    license_file: COPYING.txt
+    summary: "Qhull is a general dimension code for computing convex hulls"
+
+extra:
+  recipe-maintainers:
+    - bergtholdt

@@ -1,0 +1,17 @@
+package:
+  name: naif
+  version: {{ package_versions.naif }}
+
+source:
+  fn: cspice.tar.Z
+  url: http://naif.jpl.nasa.gov/pub/naif/toolkit//C/MacIntel_OSX_AppleC_64bit/packages/cspice.tar.Z # [osx]
+  url: http://naif.jpl.nasa.gov/pub/naif/toolkit//C/PC_Linux_GCC_64bit/packages/cspice.tar.Z # [linux]
+
+about:
+  home: http://naif.jpl.nasa.gov/
+  license: public domain
+  summary: spice data manipulation libraries and utilities.
+
+extra:
+  recipe-maintainers:
+    - rbogle

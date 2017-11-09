@@ -1,0 +1,13 @@
+package:
+  name: xalan-c
+  version: {{ package_versions.xalanc }}
+
+source:
+  url: http://apache.cs.utah.edu//xalan/xalan-c/sources/xalan_c-{{ package_versions.xalanc }}-src.tar.gz
+  fn: xalan_c-{{ package_versions.xalanc }}-src.tar.gz
+
+requirements:
+  build:
+    - xerces-c
+  run:
+    - xerces-c
