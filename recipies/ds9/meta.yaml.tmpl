@@ -3,14 +3,14 @@ package:
   version: {{ package_versions.ds9 }}
 
 source:
-  fn: ds9.{{ package_versions.ds9  }}.tar.gz  # [unix]
-  url: https://ds9.si.edu/archive/source/ds9.{{ package_versions.ds9 }}.tar.gz
+  fn: ds9.{{ package_versions.ds9  }}.tar.gz
+  url: http://ds9.si.edu/archive/source/ds9.{{ package_versions.ds9 }}.tar.gz
 
 build:
   detect_binary_files_with_prefix: true
 
 about:
-  home: https://ds9.si.edu
+  home: http://ds9.si.edu
   license: GPL v3
   license_file: LICENSE.txt
   summary: DS9 is an astronomical imaging and data visualization application
