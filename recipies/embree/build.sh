@@ -6,4 +6,12 @@ then
   ln -s libembree.so libembree${SHLIB_EXT}
 fi
 cd ..
-cp -rv * "${PREFIX}"
+mkdir -p ${PREFIX}/bin
+mkdir -p ${PREFIX}/lib
+mkdir -p ${PREFIX}/include
+mkdir -p ${PREFIX}/doc/embree
+
+cp -rv ./bin/* ${PREFIX}/bin/
+cp -rv ./lib/* ${PREFIX}/lib/
+cp -rv ./include/* ${PREFIX}/include/
+cp -rv ./doc/* ${PREFIX}/doc/embree/
