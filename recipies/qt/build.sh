@@ -36,7 +36,6 @@ if [ $(uname) == Linux ]; then
                 -nomake examples \
                 -nomake tests \
                 -verbose \
-                -skip enginio \
                 -skip location \
                 -skip sensors \
                 -skip serialport \

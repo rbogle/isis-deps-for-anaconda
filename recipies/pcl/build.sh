@@ -13,8 +13,8 @@ if [ $(uname) == Darwin ]; then
     # export LDFLAGS="${LDFLAGS} -headerpad_max_install_names"
 else
     #export OPTS="--disable-rpath"
-    export CC=gcc-4.8
-    export CXX=g++-4.8
+    export CC=gcc
+    export CXX=g++
 fi
 
 # export LDFLAGS="$LDFLAGS -L$PREFIX/lib"
