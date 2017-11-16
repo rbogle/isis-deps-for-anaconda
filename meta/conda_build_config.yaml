@@ -37,11 +37,11 @@ package_versions:
   xalanc: "1.11"
   xercesc: "3.1.4"
 run_dependencies:
-  blas: ""
+  blas: "openblas"
   boost: "1.65*"
   bzip2: ">=1.0.6,<2.0a0"
   curl: ""
-  eigen: ""
+  eigen: "3.3.3"
   expat: ""
   ffmpeg: ">=3.2.3,<3.2.6"
   flann: ""

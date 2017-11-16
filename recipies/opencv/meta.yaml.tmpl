@@ -1,0 +1,142 @@
+
+
+package:
+  name: opencv
+  version: {{ package_versions.opencv }}
+
+source:
+  fn: opencv-{{ package_versions.opencv }}.tar.gz
+  url: https://github.com/opencv/opencv/archive/{{ package_versions.opencv }}.tar.gz
+
+  patches:
+    - opencv_matrix_data_member.patch       # [win and py<35]
+    - opencv_umatrix_data_member.patch      # [win and py<35]
+    - opencv_persistence_data_member.patch  # [win and py<35]
+    - opencv_drawing_abs.patch              # [win and py<35]
+    - opencv_drawing_data_member.patch      # [win and py<35]
+    - opencv_core_int64_abs.patch           # [win and py<35]
+
+build:
+  features:                    # [not win]
+    - blas_{{ run_dependencies.blas }}  # [not win]
+  script_env:
+    - SSL_CERT_FILE
+    - CURL_CA_BUNDLE
+
+requirements:
+  build:
+    - python
+    - toolchain
+    - pkgconfig                    # [unix]
+    # For sha256 comparisons of opencv_contrib
+    - openssl 1.0.*                # [unix]
+    # For downloading opencv_contrib
+    - curl
+    # For applying patches
+    - git                          # [win]
+    - cmake
+    - numpy x.x
+    - hdf5 {{ run_dependencies.hdf5 }}         # [unix]
+    - eigen {{ run_dependencies.eigen }}
+    - jasper                       # [unix]
+    - zlib {{ run_dependencies.zlib }}
+    - jpeg {{ run_dependencies.jpeg }}
+    - libtiff {{ run_dependencies.libtiff }}
+    - libwebp {{ run_dependencies.libwebp }}
+    - harfbuzz {{ run_dependencies.harfbuzz }}   # [unix]
+    - libpng {{ run_dependencies.libpng }}
+    - msinttypes                   # [win and py<35]
+    - openblas {{ run_dependencies.openblas }}    # [not win]
+    - blas 1.1 {{ run_dependencies.blas }}  # [not win]
+    - ffmpeg {{ run_dependencies.ffmpeg }}       # [not win]
+    - qt {{package_versions.qt }}                   # [not osx]
+
+  run:
+    - python
+    - numpy x.x
+    - hdf5 {{ run_dependencies.hdf5 }}         # [unix]
+    - jasper                       # [unix]
+    - zlib {{ run_dependencies.zlib }}
+    - jpeg {{ run_dependencies.jpeg }}
+    - libwebp {{ run_dependencies.libwebp }}
+    - harfbuzz {{ run_dependencies.harfbuzz }}              # [unix]
+    - libtiff {{ run_dependencies.libtiff }}
+    - libpng {{ run_dependencies.libpng }}
+    - openblas {{ run_dependencies.openblas }}   # [not win]
+    - blas 1.1 {{ run_dependencies.blas }}  # [not win]
+    - ffmpeg {{ run_dependencies.ffmpeg }} # [not win]
+    - qt {{ package_versions.qt }}                      # [not osx]
+
+test:
+    imports:
+      - cv2
+      - cv2.xfeatures2d
+
+    commands:
+        # Verify dynamic libraries on all systems
+        {% set opencv_libs = [
+            "aruco",
+            "bgsegm",
+            "calib3d",
+            "ccalib",
+            "core",
+            "datasets",
+            "dnn",
+            "dpm",
+            "face",
+            "features2d",
+            "flann",
+            "fuzzy",
+            "highgui",
+            "imgcodecs",
+            "imgproc",
+            "line_descriptor",
+            "ml",
+            "objdetect",
+            "optflow",
+            "phase_unwrapping",
+            "photo",
+            "plot",
+            "reg",
+            "rgbd",
+            "saliency",
+            "shape",
+            "stereo",
+            "stitching",
+            "structured_light",
+            "superres",
+            "surface_matching",
+            "text",
+            "tracking",
+            "video",
+            "videoio",
+            "videostab",
+            "xfeatures2d",
+            "ximgproc",
+            "xobjdetect",
+            "xphoto"
+        ] %}
+        {% for each_opencv_lib in opencv_libs %}
+        - test -f $PREFIX/lib/libopencv_{{ each_opencv_lib }}.dylib                        # [osx]
+        - test -f $PREFIX/lib/libopencv_{{ each_opencv_lib }}.so                           # [linux]
+        - if not exist %PREFIX%\\Library\\bin\\opencv_{{ each_opencv_lib }}320.dll exit 1  # [win]
+        {% endfor %}
+        - test -f $PREFIX/lib/libopencv_bioinspired.dylib  # [osx]
+        - test -f $PREFIX/lib/libopencv_bioinspired.so     # [linux]
+        - test -f $PREFIX/lib/libopencv_hdf.dylib          # [osx]
+        - test -f $PREFIX/lib/libopencv_hdf.so             # [linux]
+        - test -f $PREFIX/lib/libopencv_freetype.dylib     # [osx]
+        - test -f $PREFIX/lib/libopencv_freetype.so        # [linux]
+
+about:
+  home: http://opencv.org/
+  license: BSD 3-clause
+  summary: Computer vision and machine learning software library.
+
+extra:
+  recipe-maintainers:
+    - jakirkham
+    - msarahan
+    - patricksnape
+    - zym1010
+    - hajapy
