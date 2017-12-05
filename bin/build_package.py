@@ -35,7 +35,7 @@ def build_pkg(recipe_path, outputdir, config):
         'output_folder': outputdir,
         'python': config.get('python', '2.7'),
         'numpy': config.get('numpy', '1.11'),
-        'channel': config.get('channel'),
+        'channels': config.get('channel'),
 
     }
     # if noupload is true turn off default is to upload
