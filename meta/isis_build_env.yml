@@ -7,7 +7,7 @@ dependencies:
   - boost-cpp=1.65.1
   - bullet=2.86.1
   - cmake=3.9.1
-  - doxygen=1.8.13
+  - doxygen=1.8.14
   - ds9=7.5
   - eigen=3.3.3
   - embree=2.16.0
