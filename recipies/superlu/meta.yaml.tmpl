@@ -5,3 +5,14 @@ package:
 source:
     git_url: https://github.com/xiaoyeli/superlu
     git_rev: master
+
+test:
+    commands:
+        # Verify libraries.
+        - test -f "$PREFIX/lib64/libsuperlu.so"                       # [unix]
+
+about:
+    home: http://crd-legacy.lbl.gov/~xiaoye/SuperLU/
+    license_file: License.txt
+    summary: "SuperLU contains a set of subroutines to solve a sparse linear system"
+    
