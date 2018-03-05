@@ -5,9 +5,9 @@ pipeline {
             label 'docker'
         }
     }
-    withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
-        stages {
-            
+    
+    stages {
+        withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
             stage('init') {
                 steps {
                     sh "touch test.ipnb"
