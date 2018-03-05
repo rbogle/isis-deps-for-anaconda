@@ -1,13 +1,13 @@
 pipeline {
-    agent {
-        docker { 
-            image 'usgsastro/condabuild:1.0'
-            label 'docker'
-        }
-    }
+    agent none
     stages {
-        stage('init') {
-            
+        stage('build Linux') {
+             agent {
+                docker { 
+                    image 'usgsastro/condabuild:1.0'
+                    label 'docker'
+                }
+            }
             steps {
                 withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
                     sh "touch test.ipynb"
@@ -15,7 +15,10 @@ pipeline {
                 }
             }
         }
-        stage('build'){
+        stage('build Mac'){
+            agent{
+                label 'mac'
+            }
             steps{
                 sh 'ls -l'
             }
