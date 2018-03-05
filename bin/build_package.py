@@ -38,10 +38,11 @@ def build_pkg(recipe_path, outputdir, config):
         'channels': config.get('channel'),
 
     }
-    # if noupload is true turn off default is to upload
+    # if noupload is true turn off,  default is to upload
+    # conda.build only check for user or token being set. 
     if not config['noupload']:
         build_config['user']= config.get('user')
-
+        build_config["token"]=config.get('token')
     try:
         conda.build(recipe_path, **build_config)
     except Exception as e :
@@ -60,6 +61,7 @@ if __name__ == '__main__':
     parser.add_argument("-y", "--noprompt", help="do not prompt for input on each package", action="store_true")
     parser.add_argument("-l", "--noupload", help="upload files after build", action="store_true")
     parser.add_argument("-u", "--user", help="user to upload to in anaconda cloud", default=argparse.SUPPRESS)
+    parser.add_argument("-t", "--token", help="token for uploading", default=argparse.SUPPRESS)
     parser.add_argument("packages", nargs='*', help="which package(s) to process, specifying 'all' will process all found")
     args = vars(parser.parse_args())
 
@@ -81,6 +83,7 @@ if __name__ == '__main__':
     config = load_config(config_file)
     config['channel'] = channel
     config['user'] = args.get('user', 'usgs-astrogeology')
+    config['token'] = args.get('token', None)
     config['noupload'] = args.get('noupload')
 
     for package in packages:

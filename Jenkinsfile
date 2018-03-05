@@ -5,16 +5,19 @@ pipeline {
             label 'docker'
         }
     }
-    stages {
-        stage('init') {
-            steps {
-                sh 'conda install -y jinja2 yaml'
-                // sh 'anaconda login -u'
+    withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
+        stages {
+            
+            stage('init') {
+                steps {
+                    sh "touch test.ipnb"
+                    sh 'anaconda -t $CLOUD_TOKEN upload -u usgs-astrogeology test.ipnb'
+                }
             }
-        }
-        stage('build'){
-            steps{
-                sh 'ls -l'
+            stage('build'){
+                steps{
+                    sh 'ls -l'
+                }
             }
         }
     }
