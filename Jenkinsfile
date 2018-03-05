@@ -10,7 +10,7 @@ pipeline {
             
             steps {
                 withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
-                    sh "touch test.ipnb"
+                    sh "touch test.ipynb"
                     sh 'anaconda -t $CLOUD_TOKEN upload -u usgs-astrogeology test.ipynb'
                 }
             }
