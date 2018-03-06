@@ -10,17 +10,18 @@ pipeline {
             }
             steps {
                 withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
-                    sh "touch test.ipynb"
-                    sh 'anaconda -t $CLOUD_TOKEN upload -u usgs-astrogeology test.ipynb'
+                    sh "./bin/build_package.py -y -u usgs-astrogeology -t $CLOUD_TOKEN naif"
                 }
             }
         }
         stage('build Mac'){
             agent{
-                label 'mac'
+                label 'darwin'
             }
             steps{
-                sh 'ls -l'
+                withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
+                    sh "./bin/build_package.py -y -u usgs-astrogeology -t $CLOUD_TOKEN naif"
+                }
             }
         }
     }
