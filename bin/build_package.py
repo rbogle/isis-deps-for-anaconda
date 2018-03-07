@@ -36,7 +36,7 @@ def build_pkg(recipe_path, outputdir, config):
         'python': config.get('python', '2.7'),
         'numpy': config.get('numpy', '1.11'),
         'channels': config.get('channel'),
-
+        'verbose' : not config.get('quiet')
     }
     # if noupload is true turn off,  default is to upload
     # conda.build only check for user or token being set. 
@@ -62,6 +62,7 @@ if __name__ == '__main__':
     parser.add_argument("-l", "--noupload", help="upload files after build", action="store_true")
     parser.add_argument("-u", "--user", help="user to upload to in anaconda cloud", default=argparse.SUPPRESS)
     parser.add_argument("-t", "--token", help="token for uploading", default=argparse.SUPPRESS)
+    parser.add_argument("-q", "--quiet", help="suppress messages", action="store_true")
     parser.add_argument("packages", nargs='*', help="which package(s) to process, specifying 'all' will process all found")
     args = vars(parser.parse_args())
 
@@ -73,7 +74,7 @@ if __name__ == '__main__':
     no_meta = args.get('nometa')
     no_prompt = args.get('noprompt')
     no_build = args.get('nobuild')
-
+  
     packages=args['packages']
     if ('all' in packages):
         packages = get_all_pkgs(recipies_path)
@@ -85,6 +86,7 @@ if __name__ == '__main__':
     config['user'] = args.get('user', 'usgs-astrogeology')
     config['token'] = args.get('token', None)
     config['noupload'] = args.get('noupload')
+    config['quiet'] = args.get('quiet')
 
     for package in packages:
 
