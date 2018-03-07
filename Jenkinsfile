@@ -20,7 +20,7 @@ pipeline {
             }
             steps{
                 withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
-                    sh "source activate"
+                    sh "source /opt/miniconda2/bin/activate"
                     sh "./bin/build_package.py -y -u usgs-astrogeology -t $CLOUD_TOKEN naif"
                 }
             }
