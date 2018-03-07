@@ -4,13 +4,13 @@ pipeline {
         stage('build Linux') {
              agent {
                 docker { 
-                    image 'astro-bin.wr.usgs.gov/docker/usgsastro/condabuild:1.0'
+                    image 'astro-bin.wr.usgs.gov/docker/usgsastro/condabuild:1.2'
                     label 'docker'
                 }
             }
             steps {
                 withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
-                    sh "./bin/build_package.py -y -u usgs-astrogeology -t $CLOUD_TOKEN naif"
+                    sh "./bin/build_package.py -y -u usgs-astrogeology -t $CLOUD_TOKEN all"
                 }
             }
         }
@@ -21,7 +21,7 @@ pipeline {
             steps{
                 withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
                     sh "source /opt/miniconda/bin/activate"
-                    sh "./bin/build_package.py -y -u usgs-astrogeology -t $CLOUD_TOKEN naif"
+                    sh "./bin/build_package.py -y -u usgs-astrogeology -t $CLOUD_TOKEN all"
                 }
             }
         }
