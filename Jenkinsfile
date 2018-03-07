@@ -20,10 +20,7 @@ pipeline {
             }
             steps{
                 withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
-                    sh "whoami"
-                    sh "hostname"
-                    sh "pwd"
-                    sh "echo $PATH"
+                    sh "source activate"
                     sh "./bin/build_package.py -y -u usgs-astrogeology -t $CLOUD_TOKEN naif"
                 }
             }
