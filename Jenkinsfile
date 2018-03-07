@@ -1,7 +1,7 @@
 pipeline {
     agent none
     stages {
-        stage('build Linux') {
+/*         stage('build Linux') {
              agent {
                 docker { 
                     image 'astro-bin.wr.usgs.gov/docker/usgsastro/condabuild:1.0'
@@ -13,7 +13,7 @@ pipeline {
                     sh "./bin/build_package.py -y -u usgs-astrogeology -t $CLOUD_TOKEN naif"
                 }
             }
-        }
+        } */
         stage('build Mac'){
             agent{
                 label 'darwin'
@@ -22,6 +22,8 @@ pipeline {
                 withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
                     sh "whoami"
                     sh "hostname"
+                    sh "pwd"
+                    sh "echo $PATH"
                     sh "./bin/build_package.py -y -u usgs-astrogeology -t $CLOUD_TOKEN naif"
                 }
             }
