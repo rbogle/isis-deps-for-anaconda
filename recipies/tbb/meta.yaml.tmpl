@@ -8,6 +8,12 @@ source:
   patches:
     - no-debug-builds.patch
 
+requirements:
+    build:
+        - gcc
+        - automake
+        - patch
+
 build:
   script_env:
     - BB_ARCH_FLAGS

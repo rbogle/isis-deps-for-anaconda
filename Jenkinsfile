@@ -24,7 +24,7 @@ Please see the attached build log for more info''', subject: 'Autobuild of conda
                         }
                     }
                 }
-                stage('build OSX'){
+/*                 stage('build OSX'){
                     agent{
                         label 'darwin'
                     }
@@ -42,7 +42,7 @@ Please see the attached build log for more info''', subject: 'Autobuild of conda
 
                         }
                     }
-                }
+                } */
             }
         }
     }

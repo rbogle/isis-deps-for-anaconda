@@ -13,7 +13,10 @@ build:
 
 requirements:
   build:
-    - cmake
+    - cmake # [linux]
+    - automake # [linux]
+    - gcc # [linux]
+    - git # [linux]
     - python {{ run_dependencies.python }}
   run:
     - python {{ run_dependencies.python }}

@@ -9,5 +9,8 @@ source:
 requirements:
   build:
     - xerces-c {{ package_versions.xercesc }}
+    - automake # [linux]
+    - gcc # [linux]
+    - git # [linux]
   run:
     - xerces-c {{ package_versions.xercesc }}
