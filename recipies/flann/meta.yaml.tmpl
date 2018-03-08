@@ -9,7 +9,7 @@ source:
 
 requirements:
     build:
-        - cmake 3.9.1
+        - cmake {{ run_dependencies.cmake }}
         - automake # [linux]
         - gcc # [linux]
         - git # [linux]
