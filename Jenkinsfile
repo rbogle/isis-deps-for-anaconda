@@ -6,7 +6,7 @@ pipeline {
                 stage('build Linux') {
                     agent {
                         docker { 
-                            image 'astro-bin.wr.usgs.gov/docker/usgsastro/condabuild:1.3'
+                            image 'astro-bin.wr.usgs.gov/docker/usgsastro/condabuild:1.4'
                             label 'docker'
                         }
                     }
