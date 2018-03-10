@@ -3,8 +3,12 @@
 import yaml
 import os
 import argparse
+import platform
+import json
+import sys
 from jinja2 import Environment, FileSystemLoader
 from conda_build import api as conda
+from time import gmtime,strftime
 
 def load_config(filename):
     with open(filename, 'r') as f:
@@ -22,7 +26,6 @@ def render_tmpl(templatepath, config):
     return Environment(loader=FileSystemLoader(path or './')).get_template(filename).render(config)
 
 def write_meta(meta_inp, meta_outp, config):
-
     if os.path.isfile(recipe_meta_tmpl):
         with open(meta_outp, 'w') as f:
             meta = render_tmpl(meta_inp, config)
@@ -30,7 +33,43 @@ def write_meta(meta_inp, meta_outp, config):
             return True
     return False
 
-def build_pkg(recipe_path, outputdir, config):
+def get_plaformid():
+    p = platform.machine()
+    s = platform.system()
+    if s == "Darwin":
+        s = "osx"
+    if s == 'Linux':
+        s = 'linux'
+    if p == "x86_64":
+        p ="-64"
+    return "%s%s" %(s,p)
+
+
+def write_bld_log(logname, log):
+    if not os.path.exists("./logs"):
+        os.makedirs("./logs")
+    logname="./logs/%s" %(logname)
+    with open(logname, 'w') as f:
+        f.write(json.dumps(log, indent=4, sort_keys=True))
+        return True
+    return False
+
+def add_bldlog_entry(log, package, status, upload, err):
+    id = get_plaformid()
+    time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+    msgs = log.get(id, list())
+    msg = {
+        'timestamp': time,
+        'package': package,
+        'built': status,
+        'upload': upload,
+        'err': err
+    }
+    msgs.append(msg)
+    if not log.get(id):
+        log[id]=msgs
+
+def build_pkg(recipe_path, outputdir, config, log):
     build_config={
         'output_folder': outputdir,
         'python': config.get('python', '2.7'),
@@ -38,16 +77,21 @@ def build_pkg(recipe_path, outputdir, config):
         'channels': config.get('channel'),
         'verbose' : not config.get('quiet')
     }
+    upload=False; status = True; err=""
     # if noupload is true turn off,  default is to upload
     # conda.build only check for user or token being set. 
     if not config['noupload']:
+        upload = True
         build_config['user']= config.get('user')
         build_config["token"]=config.get('token')
+
     try:
         conda.build(recipe_path, **build_config)
     except Exception as e :
-        print "build of %s failed." %recipe_path
-        print e
+        err = "build of %s failed. Error is %s" %(recipe_path,e)
+        status = False
+    add_bldlog_entry(log,config['build_pkg'],status, upload, err)
+    return status
 
 if __name__ == '__main__':
 
@@ -63,6 +107,8 @@ if __name__ == '__main__':
     parser.add_argument("-u", "--user", help="user to upload to in anaconda cloud", default=argparse.SUPPRESS)
     parser.add_argument("-t", "--token", help="token for uploading", default=argparse.SUPPRESS)
     parser.add_argument("-q", "--quiet", help="suppress messages", action="store_true")
+    parser.add_argument("--buildlog", help="name for buildlog", default=argparse.SUPPRESS)
+    parser.add_argument("--hardfail", help="fail on individual package build failure", action="store_true")
     parser.add_argument("packages", nargs='*', help="which package(s) to process, specifying 'all' will process all found")
     args = vars(parser.parse_args())
 
@@ -74,10 +120,15 @@ if __name__ == '__main__':
     no_meta = args.get('nometa')
     no_prompt = args.get('noprompt')
     no_build = args.get('nobuild')
+    hardfail = args.get("hardfail")
+    build_logname = args.get('buildlog', '%s-%s.log' %(get_plaformid(),strftime("%Y%m%d_%H%M%S", gmtime())))
   
     packages=args['packages']
     if ('all' in packages):
         packages = get_all_pkgs(recipies_path)
+    elif not packages:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
 
     print "Operating on packages: {}".format(' '.join(packages))
 
@@ -88,12 +139,15 @@ if __name__ == '__main__':
     config['noupload'] = args.get('noupload')
     config['quiet'] = args.get('quiet')
 
+    build_log={}
+
     for package in packages:
 
         recipe_meta_tmpl = '%s/%s/meta.yaml.tmpl' %(recipies_path,package)
         recipe_meta = '%s/%s/meta.yaml' %(recipies_path,package)
         recipe_path = '%s/%s' %(recipies_path,package)
-
+        config['build_pkg'] = package
+        success=True
         if not no_prompt:
             res=raw_input('Do you want to process %s (y/n)? ' %package)
             if res is not 'y':
@@ -108,6 +162,14 @@ if __name__ == '__main__':
         else:
             print "Will use existing meta file for %s" %package
         if not no_build:
-            build_pkg(recipe_path, dest_path, config)
+            success=build_pkg(recipe_path, dest_path, config, build_log)
         else:
             print "Skipping build of %s ..." %package
+            success=False
+            add_bldlog_entry(build_log,config['build_pkg'],False, False, "No build option selected")
+
+        if hardfail and not success:
+            write_bld_log(build_logname,build_log)
+            sys.exit("Package %s failed to build, exiting" %package)
+
+    write_bld_log(build_logname,build_log)
