@@ -11,8 +11,6 @@ if [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 fi
 
 cmake .. -G"$CMAKE_GENERATOR" \
-    -DCMAKE_C_COMPILER=${PREFIX}/bin/gcc \
-    -DCMAKE_CXX_COMPILER=${PREFIX}/bin/g++ \
     -DBUILD_MATLAB_BINDINGS:BOOL=OFF \
     -DBUILD_PYTHON_BINDINGS:BOOL=OFF \
     -DCMAKE_INSTALL_PREFIX=$PREFIX
