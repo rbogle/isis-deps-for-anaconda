@@ -10,22 +10,11 @@ pipeline {
                             label 'docker'
                         }
                     }
-                    stage("scm checkout"){
-                        steps{
-                            git credentialsId: 'jenkins-ssh', url: 'git@astrogit.wr.usgs.gov:rbogle/isis-deps-for-anaconda.git'
-                            env.CONT = sh "./bin/git_changes.py -r recipies -r conda_build_config.yaml || return"
-                        }
-                    }
-                    stage("Build Linux Packages"){
-                        steps {
-                            sh "./bin/build_package.py -y --hardfail --buildlog linux_${env.BUILD_ID}.log all"
-                        }
-                    }
-                    stage("Upload Linux Packages"){
-                        steps {
-                            withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
-                                sh "./bin/dist_package.py -u usgs-astrogeology -t $CLOUD_TOKEN -l main -l isis --force -f ./logs/linux_${env.BUILD_ID}.log"
-                            }
+                    steps {
+                        git credentialsId: 'jenkins-ssh', url: 'git@astrogit.wr.usgs.gov:rbogle/isis-deps-for-anaconda.git'
+                        sh "./bin/build_package.py -y --hardfail --buildlog linux_${env.BUILD_ID}.log all"
+                        withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
+                            sh "./bin/dist_package.py -u usgs-astrogeology -t $CLOUD_TOKEN -l main -l isis --force -f ./logs/linux_${env.BUILD_ID}.log"
                         }
                     }
                 }
@@ -33,21 +22,11 @@ pipeline {
                     agent{
                         label 'darwin'
                     }
-                    stage("scm checkout"){
-                        steps{
-                            git credentialsId: 'jenkins-ssh', url: 'git@astrogit.wr.usgs.gov:rbogle/isis-deps-for-anaconda.git'
-                        }
-                    }                    
-                    stage("Build OSX Packages"){
-                        steps {
-                            sh "./bin/build_package.py -y --hardfail --buildlog osx_${env.BUILD_ID}.log all"
-                        }
-                    }
-                    stage("Upload OSX Packages"){
-                        steps {
-                            withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
-                                sh "./bin/dist_package.py -u usgs-astrogeology -t $CLOUD_TOKEN -l main -l isis --force -f ./logs/osx_${env.BUILD_ID}.log"
-                            }
+                    steps{
+                        git credentialsId: 'jenkins-ssh', url: 'git@astrogit.wr.usgs.gov:rbogle/isis-deps-for-anaconda.git'
+                        sh "./bin/build_package.py -y --hardfail --buildlog osx_${env.BUILD_ID}.log all"
+                        withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
+                            sh "./bin/dist_package.py -u usgs-astrogeology -t $CLOUD_TOKEN -l main -l isis --force -f ./logs/osx_${env.BUILD_ID}.log"
                         }
                     }
                 }
