@@ -54,14 +54,14 @@ def write_bld_log(logname, log):
         return True
     return False
 
-def add_bldlog_entry(log, package, status, upload, err):
+def add_bldlog_entry(log, package, result, upload, err):
     id = get_plaformid()
     time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
     msgs = log.get(id, list())
     msg = {
         'timestamp': time,
         'package': package,
-        'built': status,
+        'artifact': result,
         'upload': upload,
         'err': err
     }
@@ -77,7 +77,7 @@ def build_pkg(recipe_path, outputdir, config, log):
         'channels': config.get('channel'),
         'verbose' : not config.get('quiet')
     }
-    upload=False; status = True; err=""
+    upload=False; status = True; err=""; result=""; package=""
     # if noupload is true turn off,  default is to upload
     # conda.build only check for user or token being set. 
     if not config['noupload']:
@@ -86,11 +86,15 @@ def build_pkg(recipe_path, outputdir, config, log):
         build_config["token"]=config.get('token')
 
     try:
-        conda.build(recipe_path, **build_config)
+        result = conda.build(recipe_path, **build_config)
     except Exception as e :
         err = "build of %s failed. Error is %s" %(recipe_path,e)
         status = False
-    add_bldlog_entry(log,config['build_pkg'],status, upload, err)
+
+    if result[0] != "":
+        package = os.path.relpath(result[0])
+
+    add_bldlog_entry(log,config['build_pkg'],package, upload, err)
     return status
 
 if __name__ == '__main__':
@@ -166,7 +170,7 @@ if __name__ == '__main__':
         else:
             print "Skipping build of %s ..." %package
             success=False
-            add_bldlog_entry(build_log,config['build_pkg'],False, False, "No build option selected")
+            add_bldlog_entry(build_log,config['build_pkg'],"", False, "No build option selected")
 
         if hardfail and not success:
             write_bld_log(build_logname,build_log)
