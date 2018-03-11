@@ -10,6 +10,12 @@ pipeline {
                             label 'docker'
                         }
                     }
+                    stage("scm checkout"){
+                        steps{
+                            git credentialsId: 'jenkins-ssh', url: 'git@astrogit.wr.usgs.gov:rbogle/isis-deps-for-anaconda.git'
+                            sh "./bin/git_changes.py -r recipies -r conda_build_config.yaml || exit 0"
+                        }
+                    }
                     stage("Build Linux Packages"){
                         steps {
                             sh "./bin/build_package.py -y --hardfail --buildlog linux_${env.BUILD_ID}.log jama"
@@ -27,6 +33,11 @@ pipeline {
                     agent{
                         label 'darwin'
                     }
+                    stage("scm checkout"){
+                        steps{
+                            git credentialsId: 'jenkins-ssh', url: 'git@astrogit.wr.usgs.gov:rbogle/isis-deps-for-anaconda.git'
+                        }
+                    }                    
                     stage("Build OSX Packages"){
                         steps {
                             sh "./bin/build_package.py -y --hardfail --buildlog osx_${env.BUILD_ID}.log jama"
