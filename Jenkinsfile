@@ -3,30 +3,42 @@ pipeline {
     stages {
         stage("Do Builds"){
             parallel{
-                stage('build Linux') {
+                stage('Linux') {
                     agent {
                         docker { 
-                            image 'astro-bin.wr.usgs.gov/docker/usgsastro/condabuild:1.4'
+                            image 'astro-bin.wr.usgs.gov/docker/usgsastro/condabuild:1.7'
                             label 'docker'
                         }
                     }
-                    steps {
-                        withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
-                            sh "./bin/build_package.py -y -u usgs-astrogeology -t $CLOUD_TOKEN all"
+                    stage("Build Linux Packages"){
+                        steps {
+                            sh "./bin/build_package.py -y --hardfail --buildlog linux_${env.BUILD_ID}.log jama"
+                        }
+                    }
+                    stage("Upload Linux Packages"){
+                        steps {
+                            withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
+                                sh "./bin/dist_package.py -u usgs-astrogeology -t $CLOUD_TOKEN -l main -l isis --force -f ./logs/linux_${env.BUILD_ID}.log"
+                            }
                         }
                     }
                 }
-                stage('build OSX'){
+/*                 stage('OSX'){
                     agent{
                         label 'darwin'
                     }
-                    steps{
-                        withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
-                            sh "source /opt/miniconda/bin/activate"
-                            sh "./bin/build_package.py -y -u usgs-astrogeology -t $CLOUD_TOKEN all"
+                    stage("Build OSX Packages"){
+                        steps {
+                            sh "./bin/build_package.py -y --hardfail --buildlog osx_${env.BUILD_ID}.log jama"
                         }
                     }
-
+                    stage("Upload OSX Packages"){
+                        steps {
+                            withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
+                                sh "./bin/dist_package.py -u usgs-astrogeology -t $CLOUD_TOKEN -l main -l isis --force -f ./logs/osx_${env.BUILD_ID}.log"
+                            }
+                        }
+                    }
                 }
             }
             post {
@@ -36,7 +48,7 @@ pipeline {
 Please see the attached build log for more info''', subject: 'The autobuild job of conda packages for ISIS has completed', to: 'astro_devops@usgs.gov'
 
                 }
-            }
+            } */
         }
     }
 }
