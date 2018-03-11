@@ -13,12 +13,12 @@ pipeline {
                     stage("scm checkout"){
                         steps{
                             git credentialsId: 'jenkins-ssh', url: 'git@astrogit.wr.usgs.gov:rbogle/isis-deps-for-anaconda.git'
-                            sh "./bin/git_changes.py -r recipies -r conda_build_config.yaml || exit 0"
+                            env.CONT = sh "./bin/git_changes.py -r recipies -r conda_build_config.yaml || return"
                         }
                     }
                     stage("Build Linux Packages"){
                         steps {
-                            sh "./bin/build_package.py -y --hardfail --buildlog linux_${env.BUILD_ID}.log jama"
+                            sh "./bin/build_package.py -y --hardfail --buildlog linux_${env.BUILD_ID}.log all"
                         }
                     }
                     stage("Upload Linux Packages"){
@@ -29,7 +29,7 @@ pipeline {
                         }
                     }
                 }
-/*                 stage('OSX'){
+                stage('OSX'){
                     agent{
                         label 'darwin'
                     }
@@ -40,7 +40,7 @@ pipeline {
                     }                    
                     stage("Build OSX Packages"){
                         steps {
-                            sh "./bin/build_package.py -y --hardfail --buildlog osx_${env.BUILD_ID}.log jama"
+                            sh "./bin/build_package.py -y --hardfail --buildlog osx_${env.BUILD_ID}.log all"
                         }
                     }
                     stage("Upload OSX Packages"){
@@ -59,7 +59,7 @@ pipeline {
 Please see the attached build log for more info''', subject: 'The autobuild job of conda packages for ISIS has completed', to: 'astro_devops@usgs.gov'
 
                 }
-            } */
+            }
         }
     }
 }
