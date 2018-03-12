@@ -91,8 +91,9 @@ def build_pkg(recipe_path, outputdir, config, log):
         err = "build of %s failed. Error is %s" %(recipe_path,e)
         status = False
 
-    if result[0] != "":
+    if result :
         package = os.path.relpath(result[0])
+
 
     add_bldlog_entry(log,config['build_pkg'],package, upload, err)
     return status
