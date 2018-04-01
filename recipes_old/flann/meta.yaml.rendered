@@ -1,0 +1,18 @@
+# This file created by conda-build 1.21.0
+# meta.yaml template originally from:
+# /Users/jenkins/.jenkins/jobs/conda-flann/workspace/ARCH/x64/PYTHON_VERSION/2.7/label/darwin/conda, last modified Fri Jun 17 02:22:45 2016
+# ------------------------------------------------
+
+package:
+    name: flann
+    version: 1.8.4
+source:
+    fn: flann-1.8.4-src.zip
+    url: http://people.cs.ubc.ca/~mariusm/uploads/FLANN/flann-1.8.4-src.zip
+build: {}
+requirements:
+    build:
+        - hdf5
+about:
+    home: http://assimp.sourceforge.net/
+    license: BSD

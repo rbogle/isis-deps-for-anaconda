@@ -19,9 +19,9 @@ source:
 build:
   features:                    # [not win]
     - blas_{{ run_dependencies.blas }}  # [not win]
-  script_env:
-    - SSL_CERT_FILE
-    - CURL_CA_BUNDLE
+ # script_env:
+ #   - SSL_CERT_FILE
+ #   - CURL_CA_BUNDLE
 
 requirements:
   build:
@@ -35,7 +35,7 @@ requirements:
     # For applying patches
     - git                          # [win]
     - cmake
-    - numpy x.x
+    - numpy {{ run_dependencies.numpy }} 
     - hdf5 {{ run_dependencies.hdf5 }}         # [unix]
     - eigen {{ run_dependencies.eigen }}
     - jasper                       # [unix]
@@ -53,7 +53,7 @@ requirements:
 
   run:
     - python
-    - numpy x.x
+    - numpy {{ run_dependencies.numpy }} 
     - hdf5 {{ run_dependencies.hdf5 }}         # [unix]
     - jasper                       # [unix]
     - zlib {{ run_dependencies.zlib }}
