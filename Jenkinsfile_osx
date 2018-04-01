@@ -2,6 +2,9 @@ pipeline {
     agent{
         label 'darwin'
     }
+    parameters {
+        string(name: 'PKGS', defaultValue: 'all', description: "name or comma separaged list of package names to build, defaults to 'all'")
+    }
     stages {
         stage("checkout"){
             steps{
@@ -10,7 +13,7 @@ pipeline {
         }
         stage("build"){
             steps{
-                sh "./bin/build_package.py -y --hardfail --buildlog osx_${env.BUILD_ID}.log all"
+                sh "./bin/build_package.py -y --hardfail --buildlog osx_${env.BUILD_ID}.log ${params.PKGS}"
             }
         }
         stage("deploy"){
