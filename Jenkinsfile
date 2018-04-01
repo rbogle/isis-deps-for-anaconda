@@ -1,10 +1,16 @@
-node {
-    stage("Branch OS specific Builds"){
-        parallel{
-            lin = build (job: "./linux_isisdeps_build", propagate: false).result
-            osx = build (job: "./osx_isisdeps_build", propagate: false).result
-            if(lin == 'FAILURE' || osx == 'FAILURE') {
-                currentBuild.result = 'FAILURE' // of FAILURE
+pipeline {
+    agent: none
+    stages{
+        stage("Branch OS specific Builds"){
+            steps{
+                parallel {
+                    stage("Linux"){
+                        build (job: "./linux_isisdeps_build")
+                    }
+                    stage("OS X") {
+                        build (job: "./osx_isisdeps_build")
+                    }
+                }
             }
         }
     }
