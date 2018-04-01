@@ -4,10 +4,14 @@ pipeline {
         stage("Branch OS specific Builds"){
             parallel {
                 stage("Linux"){
-                    build './linux_isisdeps_build'
+                    steps{
+                        build './linux_isisdeps_build'
+                    }
                 }
                 stage("OS X") {
-                    build "./osx_isisdeps_build"
+                    steps{
+                        build "./osx_isisdeps_build"
+                    }
                 }
             }
         }
