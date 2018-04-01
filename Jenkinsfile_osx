@@ -21,10 +21,9 @@ pipeline {
             }
         }
     }
-    post{
-        failure{
-            emailext attachLog: true, body: "The osx build failed. Please see the attached build log for more info.", subject: 'The osx build job of conda packages for ISIS has completed', to: 'astro_devops@usgs.gov'
-        }
-        
-    }
+//    post{
+//        failure{
+//             emailext attachLog: true, body: "The osx build failed. Please see the attached build log for more info.", subject: 'The osx build job of conda packages for ISIS has completed', to: 'astro_devops@usgs.gov'
+//        }   
+//    }
 }
