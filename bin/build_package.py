@@ -19,7 +19,8 @@ def get_all_pkgs(recipe_root):
     packages=list()
     for package in os.listdir(recipe_root):
         packages.append(package)
-    return packages.sort()
+    packages.sort()
+    return packages
 
 def render_tmpl(templatepath, config):
     path,filename = os.path.split(templatepath)
