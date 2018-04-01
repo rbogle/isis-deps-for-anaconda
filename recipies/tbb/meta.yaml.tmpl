@@ -8,6 +8,10 @@ source:
   patches:
     - no-debug-builds.patch
 
+requirements:
+  build:
+    - patch
+
 build:
   script_env:
     - BB_ARCH_FLAGS
