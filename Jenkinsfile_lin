@@ -17,8 +17,10 @@ pipeline {
             }
         }
         stage("deploy"){
-            withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
-                sh "./bin/dist_package.py -u usgs-astrogeology -t $CLOUD_TOKEN -l main -l isis --force -f ./logs/linux_${env.BUILD_ID}.log"
+            steps{
+                withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
+                    sh "./bin/dist_package.py -u usgs-astrogeology -t $CLOUD_TOKEN -l main -l isis --force -f ./logs/linux_${env.BUILD_ID}.log"
+                }
             }
         }
     }
