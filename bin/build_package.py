@@ -18,7 +18,7 @@ def load_config(filename):
 def get_all_pkgs(recipe_root):
     packages=list()
     for package in os.listdir(recipe_root):
-        if not f.startswith('.')
+        if not f.startswith('.'):
             packages.append(package)
     packages.sort()
     return packages
