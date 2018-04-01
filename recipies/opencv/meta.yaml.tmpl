@@ -19,9 +19,9 @@ source:
 build:
   features:                    # [not win]
     - blas_{{ run_dependencies.blas }}  # [not win]
-  script_env:
-    - SSL_CERT_FILE
-    - CURL_CA_BUNDLE
+ # script_env:
+ #   - SSL_CERT_FILE
+ #   - CURL_CA_BUNDLE
 
 requirements:
   build:
