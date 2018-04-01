@@ -1,6 +1,9 @@
 pipeline {
     agent{
-        label 'darwin'
+        docker { 
+            image 'astro-bin.wr.usgs.gov/docker/usgsastro/condabuild:1.7'
+            label 'docker'
+        }
     }
     stages {
         stage("checkout"){
@@ -10,18 +13,18 @@ pipeline {
         }
         stage("build"){
             steps{
-                sh "./bin/build_package.py -y --hardfail --buildlog osx_${env.BUILD_ID}.log all"
+                sh "./bin/build_package.py -y --hardfail --buildlog linux_${env.BUILD_ID}.log all"
             }
         }
         stage("deploy"){
             withCredentials([string(credentialsId: 'AnacondaCloud', variable: 'CLOUD_TOKEN')]) {
-                sh "./bin/dist_package.py -u usgs-astrogeology -t $CLOUD_TOKEN -l main -l isis --force -f ./logs/osx_${env.BUILD_ID}.log"
+                sh "./bin/dist_package.py -u usgs-astrogeology -t $CLOUD_TOKEN -l main -l isis --force -f ./logs/linux_${env.BUILD_ID}.log"
             }
         }
     }
     post{
         failure{
-            emailext attachLog: true, body: "The osx build failed. Please see the attached build log for more info.", subject: 'The osx build job of conda packages for ISIS has completed', to: 'astro_devops@usgs.gov'
+            emailext attachLog: true, body: "The linux build failed. Please see the attached build log for more info.", subject: 'The linux build job of conda packages for ISIS has completed', to: 'astro_devops@usgs.gov'
         }
         
     }
