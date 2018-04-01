@@ -18,7 +18,8 @@ def load_config(filename):
 def get_all_pkgs(recipe_root):
     packages=list()
     for package in os.listdir(recipe_root):
-        packages.append(package)
+        if not f.startswith('.')
+            packages.append(package)
     packages.sort()
     return packages
 
@@ -103,7 +104,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", "--config", help="path to the config file", default=argparse.SUPPRESS)
-    parser.add_argument("-r", "--recipies", help="path where recipes live",default=argparse.SUPPRESS)
+    parser.add_argument("-r", "--recipes", help="path where recipes live",default=argparse.SUPPRESS)
     parser.add_argument("-d", "--dest", help="destination path for the build", default=argparse.SUPPRESS)
     parser.add_argument("-c", "--channel", nargs='*', help="additional channels to use in build", default=argparse.SUPPRESS)
     parser.add_argument("-n", "--nometa", help="do not generate new meta.yaml from template", action="store_true")
@@ -120,7 +121,7 @@ if __name__ == '__main__':
 
     base_path = os.getcwd()
     config_file = args.get('config', '%s/meta/conda_build_config.yaml' %base_path)
-    recipies_path = args.get('recipies', '%s/recipies' %base_path)
+    recipes_path = args.get('recipes', '%s/recipes' %base_path)
     dest_path = args.get('dest', '%s/build' %base_path)
     channel=args.get('channel', list())
     no_meta = args.get('nometa')
@@ -131,7 +132,7 @@ if __name__ == '__main__':
   
     packages=args['packages']
     if ('all' in packages):
-        packages = get_all_pkgs(recipies_path)
+        packages = get_all_pkgs(recipes_path)
     elif not packages:
         parser.print_help(sys.stderr)
         sys.exit(1)
@@ -149,9 +150,9 @@ if __name__ == '__main__':
 
     for package in packages:
 
-        recipe_meta_tmpl = '%s/%s/meta.yaml.tmpl' %(recipies_path,package)
-        recipe_meta = '%s/%s/meta.yaml' %(recipies_path,package)
-        recipe_path = '%s/%s' %(recipies_path,package)
+        recipe_meta_tmpl = '%s/%s/meta.yaml.tmpl' %(recipes_path,package)
+        recipe_meta = '%s/%s/meta.yaml' %(recipes_path,package)
+        recipe_path = '%s/%s' %(recipes_path,package)
         config['build_pkg'] = package
         success=True
         if not no_prompt:
