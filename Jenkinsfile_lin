@@ -1,7 +1,7 @@
 pipeline {
     agent{
         docker { 
-            image 'astro-bin.wr.usgs.gov/docker/usgsastro/condabuild:1.7'
+            image 'astro-bin.wr.usgs.gov/docker/usgsastro/condabuild:1.8'
             label 'docker'
         }
     }
